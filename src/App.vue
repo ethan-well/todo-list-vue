@@ -17,19 +17,18 @@
 </template>
 
 <script>
+import Store from './store'
 export default {
   data: function() {
     return {
       title: "My Todo List",
-      items: [ ],
-    newItem: '',
-    is_finished: 'is-finished'
+      items: Store.fetch(),
+      newItem: ''
     }
   },
   methods: {
     make_finished: function(item){
       item.is_finished = !item.is_finished
-      console.log('xxxxx')
     },
     AddItem: function(){
       console.log(this.newItem);
@@ -38,6 +37,15 @@ export default {
         is_finished: false
       });
       this.newItem = "";
+    }
+  },
+  watch: {
+    items: {
+      handler: function(items){
+        Store.save(items);
+        console.log(items)
+      },
+      deep: true
     }
   }
 }
